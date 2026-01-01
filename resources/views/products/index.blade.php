@@ -3,159 +3,281 @@
 @section('title', 'Catalog')
 
 @section('content')
-    <div class="container py-4">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-lg-3 mb-4">
-                <!-- Search Form -->
-                <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <i class="bi bi-search"></i> Search Products
+<style>
+    /* Custom Scrollbar for Sidebar */
+    .sidebar-sticky {
+        position: sticky;
+        top: 6rem;
+    }
+
+    /* Product Card Styling */
+    .product-card {
+        border: 1px solid #f0f0f0;
+        background: #fff;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        border-color: transparent;
+    }
+
+    .product-image-container {
+        position: relative;
+        overflow: hidden;
+        padding-top: 100%; /* 1:1 Aspect Ratio */
+        background-color: #f8fafc;
+    }
+
+    .product-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.05);
+    }
+
+    .category-tag {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(4px);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #1f2937;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+        background-color: var(--primary-color);
+        color: white !important;
+    }
+
+    /* Filter Sidebar Styling */
+    .filter-group-title {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #9ca3af;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .filter-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.6rem 1rem;
+        margin-bottom: 0.25rem;
+        border-radius: 8px;
+        color: #4b5563;
+        text-decoration: none;
+        transition: all 0.2s;
+        font-weight: 500;
+    }
+
+    .filter-link:hover, .filter-link.active {
+        background-color: #eff6ff;
+        color: var(--primary-color);
+    }
+    
+    .filter-link.active {
+        font-weight: 600;
+    }
+
+    .search-input {
+        background-color: #f3f4f6;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        transition: all 0.2s;
+    }
+
+    .search-input:focus {
+        background-color: #fff;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+</style>
+
+<div class="bg-light min-vh-100 py-5">
+    <div class="container">
+        <!-- Header & Search -->
+        <div class="row align-items-center mb-5">
+            <div class="col-md-6">
+                <h2 class="fw-bold text-dark mb-1">Our Catalog</h2>
+                <p class="text-muted mb-0">Discover premium electronics curated for you.</p>
+            </div>
+            <div class="col-md-6 mt-3 mt-md-0">
+                <form action="{{ route('products.index') }}" method="GET">
+                    <div class="position-relative">
+                        <input type="text" name="search" class="form-control search-input ps-5" 
+                               placeholder="Search for products..." value="{{ request('search') }}">
+                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
-                    <div class="card-body">
-                        <form action="{{ route('products.index') }}" method="GET">
-                            <div class="input-group">
-                                <input type="text" 
-                                       name="search" 
-                                       class="form-control" 
-                                       placeholder="Search..." 
-                                       value="{{ request('search') }}">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-search"></i>
-                                </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3">
+                <div class="sidebar-sticky">
+                    <!-- Categories -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-body p-4">
+                            <h6 class="filter-group-title">Categories</h6>
+                            <div class="d-flex flex-column">
+                                <a href="{{ route('products.index') }}" 
+                                   class="filter-link {{ !request('category') ? 'active' : '' }}">
+                                    <span>All Products</span>
+                                    <span class="badge bg-light text-dark rounded-pill">{{ \App\Models\Product::count() }}</span>
+                                </a>
+                                <a href="{{ route('products.index', ['category' => 'HP']) }}" 
+                                   class="filter-link {{ request('category') == 'HP' ? 'active' : '' }}">
+                                    <span><i class="bi bi-phone me-2"></i>Smartphones</span>
+                                    <span class="badge bg-light text-dark rounded-pill">{{ \App\Models\Product::where('category', 'HP')->count() }}</span>
+                                </a>
+                                <a href="{{ route('products.index', ['category' => 'Laptop']) }}" 
+                                   class="filter-link {{ request('category') == 'Laptop' ? 'active' : '' }}">
+                                    <span><i class="bi bi-laptop me-2"></i>Laptops</span>
+                                    <span class="badge bg-light text-dark rounded-pill">{{ \App\Models\Product::where('category', 'Laptop')->count() }}</span>
+                                </a>
                             </div>
-                            @if(request('category'))
-                                <input type="hidden" name="category" value="{{ request('category') }}">
-                            @endif
-                        </form>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Categories Filter -->
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <i class="bi bi-tag"></i> Categories
-                    </div>
-                    <div class="list-group list-group-flush">
-                        <a href="{{ route('products.index', request()->except('category')) }}" 
-                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {{ !request('category') ? 'active' : '' }}">
-                            <span><i class="bi bi-grid-3x3-gap"></i> All Products</span>
-                            <span class="badge bg-secondary rounded-pill">{{ $totalProducts ?? 0 }}</span>
-                        </a>
-                        <a href="{{ route('products.index', array_merge(request()->except('category'), ['category' => 'HP'])) }}" 
-                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {{ request('category') === 'HP' ? 'active' : '' }}">
-                            <span><i class="bi bi-phone"></i> Smartphones (HP)</span>
-                        </a>
-                        <a href="{{ route('products.index', array_merge(request()->except('category'), ['category' => 'Laptop'])) }}" 
-                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {{ request('category') === 'Laptop' ? 'active' : '' }}">
-                            <span><i class="bi bi-laptop"></i> Laptops</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Price Range Info -->
-                <div class="card mt-4">
-                    <div class="card-header bg-secondary text-white">
-                        <i class="bi bi-info-circle"></i> Shop Info
-                    </div>
-                    <div class="card-body">
-                        <p class="mb-2"><i class="bi bi-truck text-primary"></i> Free shipping over Rp 1.000.000</p>
-                        <p class="mb-2"><i class="bi bi-shield-check text-success"></i> Official warranty</p>
-                        <p class="mb-0"><i class="bi bi-arrow-repeat text-warning"></i> Easy 7-day returns</p>
+                    <!-- Shop Info (Simplified) -->
+                    <div class="card border-0 shadow-sm rounded-4 bg-primary text-white overflow-hidden position-relative">
+                        <div class="card-body p-4 position-relative z-1">
+                            <h5 class="fw-bold mb-3">Why Shop With Us?</h5>
+                            <ul class="list-unstyled mb-0 d-flex flex-column gap-2 opacity-90">
+                                <li><i class="bi bi-check-circle-fill me-2"></i> Official Warranty</li>
+                                <li><i class="bi bi-truck me-2"></i> Free Shipping</li>
+                                <li><i class="bi bi-shield-check me-2"></i> Secure Payment</li>
+                            </ul>
+                        </div>
+                        <!-- Decorative Circle -->
+                        <div class="position-absolute bottom-0 end-0 translate-middle-y rounded-circle bg-white opacity-10" 
+                             style="width: 100px; height: 100px; margin-right: -20px; margin-bottom: -20px;"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Products Grid -->
+            <!-- Product Grid -->
             <div class="col-lg-9">
-                <!-- Page Header -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h2 class="fw-bold mb-1">
-                            @if(request('category'))
-                                {{ request('category') === 'HP' ? 'Smartphones' : 'Laptops' }}
-                            @else
-                                All Products
-                            @endif
-                        </h2>
-                        <p class="text-muted mb-0">
-                            @if(request('search'))
-                                Search results for "{{ request('search') }}"
-                            @else
-                                Browse our collection of quality electronics
-                            @endif
-                        </p>
-                    </div>
-                    <div class="d-none d-md-block">
-                        <span class="text-muted">{{ $products->total() }} products found</span>
-                    </div>
-                </div>
-
-                <!-- Active Filters -->
-                @if(request('search') || request('category'))
-                    <div class="mb-3">
-                        <span class="text-muted me-2">Active filters:</span>
-                        @if(request('search'))
-                            <a href="{{ route('products.index', request()->except('search')) }}" class="badge bg-primary text-decoration-none">
-                                Search: {{ request('search') }} <i class="bi bi-x"></i>
-                            </a>
-                        @endif
-                        @if(request('category'))
-                            <a href="{{ route('products.index', request()->except('category')) }}" class="badge bg-info text-decoration-none">
-                                Category: {{ request('category') }} <i class="bi bi-x"></i>
-                            </a>
-                        @endif
-                        <a href="{{ route('products.index') }}" class="ms-2 text-danger small">Clear all</a>
-                    </div>
-                @endif
-
                 @if($products->isEmpty())
                     <div class="text-center py-5">
-                        <i class="bi bi-search text-muted" style="font-size: 4rem;"></i>
-                        <h4 class="mt-3 text-muted">No products found</h4>
-                        <p class="text-muted">Try adjusting your search or filter to find what you're looking for.</p>
-                        <a href="{{ route('products.index') }}" class="btn btn-primary">View All Products</a>
+                        <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-state-2130362-1800926.png" 
+                             alt="No products" style="max-width: 250px; opacity: 0.8;">
+                        <h4 class="mt-4 fw-bold text-muted">No products found</h4>
+                        <p class="text-muted">Try adjusting your search or category filter.</p>
+                        <a href="{{ route('products.index') }}" class="btn btn-primary rounded-pill px-4 mt-2">Clear Filters</a>
                     </div>
                 @else
-                    <div class="row g-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <p class="text-muted mb-0 small">Showing {{ $products->firstItem() }}-{{ $products->lastItem() }} of {{ $products->total() }} results</p>
+                        
+                        <!-- Optional Sort (Visual Only for now) -->
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-white border shadow-sm dropdown-toggle rounded-pill px-3" type="button" data-bs-toggle="dropdown">
+                                Sort by: Newest
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
+                                <li><a class="dropdown-item" href="#">Newest Arrival</a></li>
+                                <li><a class="dropdown-item" href="#">Price: Low to High</a></li>
+                                <li><a class="dropdown-item" href="#">Price: High to Low</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                         @foreach($products as $product)
-                            <div class="col-6 col-md-4">
-                                <div class="card product-card h-100">
-                                    <a href="{{ route('products.show', $product->slug) }}" class="text-decoration-none">
+                            <div class="col">
+                                <div class="product-card h-100 d-flex flex-column">
+                                    <!-- Image -->
+                                    <div class="product-image-container">
+                                        <span class="category-tag">{{ $product->category }}</span>
                                         @if($product->image)
-                                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                            <img src="{{ Str::startsWith($product->image, 'http') ? $product->image : asset('storage/' . $product->image) }}" 
+                                                 class="product-image" alt="{{ $product->name }}">
                                         @else
-                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                                <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                                            <div class="product-image d-flex align-items-center justify-content-center bg-light text-muted">
+                                                <i class="bi bi-image fs-1"></i>
                                             </div>
                                         @endif
-                                    </a>
-                                    <div class="card-body d-flex flex-column">
-                                        <span class="badge category-badge {{ $product->category === 'HP' ? 'bg-info' : 'bg-secondary' }} mb-2 align-self-start">
-                                            <i class="bi {{ $product->category === 'HP' ? 'bi-phone' : 'bi-laptop' }}"></i> {{ $product->category }}
-                                        </span>
-                                        <h6 class="card-title mb-2">
-                                            <a href="{{ route('products.show', $product->slug) }}" class="text-decoration-none text-dark">
-                                                {{ Str::limit($product->name, 40) }}
-                                            </a>
-                                        </h6>
-                                        <p class="text-muted small mb-2">{{ Str::limit($product->description, 60) }}</p>
-                                        <div class="mt-auto">
-                                            <div class="price-tag mb-2">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                                            @if($product->stock > 0)
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <small class="text-success"><i class="bi bi-check-circle"></i> In Stock ({{ $product->stock }})</small>
-                                                    <form action="{{ route('cart.add', $product) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                            <i class="bi bi-cart-plus"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            @else
-                                                <small class="text-danger"><i class="bi bi-x-circle"></i> Out of Stock</small>
-                                            @endif
+                                    </div>
+
+                                    <!-- Content -->
+                                    <div class="p-4 d-flex flex-column flex-grow-1">
+                                        <div class="mb-2">
+                                            <h5 class="fw-bold text-dark mb-1 text-truncate" title="{{ $product->name }}">
+                                                {{ $product->name }}
+                                            </h5>
                                         </div>
+                                        
+                                        <p class="text-muted small flex-grow-1 mb-3 line-clamp-2">
+                                            {{ Str::limit($product->description, 60) }}
+                                        </p>
+
+                                        <div class="d-flex align-items-center justify-content-between mt-auto pt-3 border-top border-light">
+                                            <div>
+                                                <small class="text-muted d-block" style="font-size: 0.7rem;">Price</small>
+                                                <span class="fw-bold text-primary fs-5">
+                                                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                                                </span>
+                                            </div>
+                                            
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('products.show', $product->slug) }}" 
+                                                   class="action-btn bg-light text-dark" 
+                                                   title="View Details">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                
+                                                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" 
+                                                            class="action-btn bg-primary text-white border-0 shadow-sm"
+                                                            title="Add to Cart"
+                                                            {{ $product->stock < 1 ? 'disabled' : '' }}>
+                                                        <i class="bi bi-cart-plus"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        
+                                        @if($product->stock < 5 && $product->stock > 0)
+                                            <div class="mt-2 text-danger small fst-italic">
+                                                <i class="bi bi-exclamation-circle me-1"></i> Only {{ $product->stock }} left!
+                                            </div>
+                                        @elseif($product->stock < 1)
+                                            <div class="mt-2 text-muted small fst-italic">
+                                                <i class="bi bi-x-circle me-1"></i> Out of Stock
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -163,13 +285,12 @@
                     </div>
 
                     <!-- Pagination -->
-                    @if($products->hasPages())
-                        <div class="d-flex justify-content-center mt-4">
-                            {{ $products->withQueryString()->links() }}
-                        </div>
-                    @endif
+                    <div class="mt-5 d-flex justify-content-center">
+                        {{ $products->withQueryString()->links() }}
+                    </div>
                 @endif
             </div>
         </div>
     </div>
+</div>
 @endsection

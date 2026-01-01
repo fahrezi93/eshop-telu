@@ -180,8 +180,8 @@
             snap.pay('{{ $order->snap_token }}', {
                 onSuccess: function(result) {
                     console.log('Payment success:', result);
-                    alert('Payment successful! Thank you for your order.');
-                    window.location.reload();
+                    // Redirect to verification route to update status in database
+                    window.location.href = "/orders/{{ $order->id }}/verify-payment"; 
                 },
                 onPending: function(result) {
                     console.log('Payment pending:', result);

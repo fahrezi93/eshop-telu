@@ -107,6 +107,8 @@ class OrderController extends Controller
         \Midtrans\Config::$isProduction = config('services.midtrans.is_production', false);
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
+        
+        Log::info('Midtrans Mode: ' . (\Midtrans\Config::$isProduction ? 'PRODUCTION' : 'SANDBOX'));
 
         // Build Midtrans transaction params
         $params = [

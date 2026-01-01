@@ -38,7 +38,10 @@ Route::middleware('auth')->group(function () {
     
     // My Orders
     Route::get('/orders', [OrderController::class, 'myOrders'])->name('orders.index');
-    Route::get('/orders/{orderNumber}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}/verify-payment', [OrderController::class, 'verifyPayment'])->name('orders.verify');
+    
+    // Profile (from Breeze)
     
     // Profile (from Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
