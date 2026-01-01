@@ -11,6 +11,11 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary-color: #2563eb;
@@ -22,7 +27,7 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             color: var(--text-dark);
             min-height: 100vh;
             display: flex;
@@ -216,12 +221,12 @@
                             </ul>
                         </li>
                     @else
-                        <li class="nav-item mt-2 mt-lg-0">
-                            <div class="d-flex gap-2">
-                                <a class="btn btn-outline-light w-100 w-lg-auto btn-sm px-3" href="{{ route('login') }}">
-                                    <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                        <li class="nav-item mt-2 mt-lg-0 ms-lg-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <a class="btn btn-outline-light rounded-pill px-4 btn-sm fw-medium" href="{{ route('login') }}">
+                                    Login
                                 </a>
-                                <a class="btn btn-light w-100 w-lg-auto btn-sm px-3 text-primary fw-bold" href="{{ route('register') }}">
+                                <a class="btn btn-light text-primary rounded-pill px-4 btn-sm fw-bold shadow-sm" href="{{ route('register') }}">
                                     Register
                                 </a>
                             </div>

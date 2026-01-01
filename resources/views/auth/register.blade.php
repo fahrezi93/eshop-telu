@@ -9,8 +9,9 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4 p-lg-5">
                         <div class="text-center mb-4">
-                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
-                                <i class="bi bi-person-plus text-success" style="font-size: 3rem;"></i>
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 shadow-lg" 
+                                 style="width: 80px; height: 80px; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+                                <i class="bi bi-person-plus-fill text-white" style="font-size: 2.5rem;"></i>
                             </div>
                             <h3 class="fw-bold">Create Account</h3>
                             <p class="text-muted">Join E-Shop Telu and start shopping</p>
@@ -103,6 +104,9 @@
                                            required
                                            autocomplete="new-password"
                                            placeholder="Min. 8 characters">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password', this)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
                                 </div>
                                 @error('password')
                                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -121,10 +125,13 @@
                                            required
                                            autocomplete="new-password"
                                            placeholder="Confirm your password">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password_confirmation', this)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-success btn-lg w-100 mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3 shadow-sm">
                                 <i class="bi bi-person-plus me-2"></i>Create Account
                             </button>
                         </form>
@@ -161,3 +168,22 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    }
+</script>
+@endpush

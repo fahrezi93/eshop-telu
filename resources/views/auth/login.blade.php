@@ -9,8 +9,9 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4 p-lg-5">
                         <div class="text-center mb-4">
-                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
-                                <i class="bi bi-person-circle text-primary" style="font-size: 3rem;"></i>
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 shadow-lg" 
+                                 style="width: 80px; height: 80px; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);">
+                                <i class="bi bi-person-fill text-white" style="font-size: 2.5rem;"></i>
                             </div>
                             <h3 class="fw-bold">Welcome Back</h3>
                             <p class="text-muted">Login to your E-Shop Telu account</p>

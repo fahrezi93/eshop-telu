@@ -83,15 +83,48 @@
         background: #e2e8f0;
         border-radius: 10px;
     }
+    /* Responsive Hero Illustration */
+    .hero-composition-wrapper {
+        transform-origin: center center;
+    }
+    @media (max-width: 767.98px) {
+        .hero-composition-wrapper {
+            transform: scale(0.9); /* Slightly larger scale */
+            margin-bottom: 20px; /* POSITIVE margin to create space */
+        }
+        .hero-section {
+            padding-top: 1rem !important;
+            padding-bottom: 3rem !important; /* More breathing room at bottom */
+        }
+        .floating-features {
+            margin-top: 0 !important; /* No overlap on mobile, stack naturally */
+            padding-top: 1rem;
+        }
+        /* Remove borders on mobile for features */
+        .border-end-md {
+            border-right: none !important;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .border-end-md:last-child {
+            border-bottom: none;
+        }
+    }
+    @media (min-width: 768px) {
+        .border-end-md {
+            border-right: 1px solid #f0f0f0;
+        }
+    }
 </style>
 
 <!-- Hero Section -->
-<section class="hero-section py-5">
-    <div class="container py-lg-5">
-        <div class="row align-items-center flex-lg-row-reverse">
+<section class="hero-section py-lg-5">
+    <div class="container py-4 py-lg-5">
+        <div class="row align-items-center flex-lg-row-reverse text-center text-lg-start">
             <!-- Hero Image -->
-            <div class="col-lg-6 mb-5 mb-lg-0 text-center">
-                <div class="position-relative d-inline-block p-5">
+            <div class="col-lg-6 mb-4 mb-lg-0 text-center">
+                <div class="position-relative d-inline-block p-3 p-lg-5 hero-composition-wrapper">
                     <!-- Dynamic Blob Background -->
                     <div class="position-absolute top-50 start-50 translate-middle" style="width: 150%; height: 150%; z-index: -1;">
                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-100 h-100 opacity-10">
@@ -99,28 +132,29 @@
                         </svg>
                     </div>
 
-                    <!-- Laptop Composition -->
+                    <!-- Laptop Composition (Responsive Widths) -->
                     <div class="position-relative z-1 floating-animation">
                         <!-- Laptop Base -->
-                        <div class="bg-white rounded-4 shadow-lg p-3 d-flex align-items-center justify-content-center position-relative" style="width: 320px; height: 220px; border: 1px solid rgba(0,0,0,0.05);">
+                        <div class="bg-white rounded-4 shadow-lg p-3 d-flex align-items-center justify-content-center position-relative mx-auto" 
+                             style="width: 280px; max-width: 100%; height: 190px; border: 1px solid rgba(0,0,0,0.05);"> <!-- Sized down base -->
                             <!-- Laptop Screen -->
                             <div class="bg-primary w-100 h-100 rounded-3 overflow-hidden position-relative d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);">
-                                <i class="bi bi-cart-check text-white opacity-25" style="font-size: 5rem;"></i>
+                                <i class="bi bi-cart-check text-white opacity-25" style="font-size: 4rem;"></i>
                                 <!-- Reflection -->
                                 <div class="position-absolute top-0 start-0 w-100 h-50 bg-white opacity-10" style="transform: skewY(-10deg) translateY(-50%);"></div>
                             </div>
                         </div>
                         <!-- Laptop Bottom -->
-                        <div class="bg-secondary rounded-bottom-4 mx-auto" style="width: 360px; height: 15px; background: #e2e8f0; margin-top: -5px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);"></div>
+                        <div class="bg-secondary rounded-bottom-4 mx-auto" style="width: 310px; max-width: 110%; height: 12px; background: #e2e8f0; margin-top: -5px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);"></div>
                     </div>
 
                     <!-- Floating Phone Card (Glassmorphism) -->
                     <div class="position-absolute bottom-0 end-0 floating-animation-delay bg-white bg-opacity-75 backdrop-blur p-2 rounded-4 shadow-lg border border-white" 
-                         style="width: 100px; height: 180px; transform: rotate(-10deg) translate(-20px, 30px); z-index: 2;">
+                         style="width: 90px; height: 160px; transform: rotate(-10deg) translate(-10px, 20px); z-index: 2;">
                         <div class="bg-dark w-100 h-100 rounded-3 d-flex flex-column align-items-center justify-content-between p-2 py-3" style="background: linear-gradient(180deg, #1f2937 0%, #000000 100%);">
-                            <div class="bg-white rounded-pill opacity-20" style="width: 30px; height: 4px;"></div>
-                            <i class="bi bi-bag-heart-fill text-primary" style="font-size: 2.5rem;"></i>
-                            <div class="bg-white rounded-circle opacity-20" style="width: 20px; height: 20px; border: 1px solid rgba(255,255,255,0.5);"></div>
+                            <div class="bg-white rounded-pill opacity-20" style="width: 25px; height: 3px;"></div>
+                            <i class="bi bi-bag-heart-fill text-primary" style="font-size: 2rem;"></i>
+                            <div class="bg-white rounded-circle opacity-20" style="width: 15px; height: 15px; border: 1px solid rgba(255,255,255,0.5);"></div>
                         </div>
                     </div>
                 </div>
@@ -149,15 +183,16 @@
                 <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-3">
                     🚀 New Arrivals 2026
                 </span>
-                <h1 class="display-3 fw-bold mb-4" style="letter-spacing: -1px; line-height: 1.1;">
+                <h1 class="display-4 fw-bold mb-3 mb-lg-4" style="letter-spacing: -1px; line-height: 1.1;">
                     Next Generation <br>
                     <span class="text-gradient">Technology.</span>
                 </h1>
-                <p class="lead text-secondary mb-5 pe-lg-5">
+                <p class="lead text-secondary mb-4 pe-lg-5 fs-6 fs-lg-4">
                     Experience the future with our curated collection of premium smartphones and high-performance laptops. 
                     Official warranty included.
                 </p>
-                <div class="d-flex gap-3">
+                <div class="d-flex gap-3 justify-content-center justify-content-lg-start">
+
                     <a href="{{ route('products.index') }}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
                         Shop Now <i class="bi bi-arrow-right ms-2"></i>
                     </a>
