@@ -15,11 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Create test user with complete profile
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'address' => 'Jl. Sudirman No. 123, Jakarta Pusat, DKI Jakarta 10220',
+            'phone' => '081234567890',
+        ]);
+
+        // Seed products
+        $this->call([
+            ProductSeeder::class,
         ]);
     }
 }
+
