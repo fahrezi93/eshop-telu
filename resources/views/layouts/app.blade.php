@@ -155,15 +155,25 @@
             </button>
             
             <div class="collapse navbar-collapse mt-3 mt-lg-0" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-3 me-lg-4">
                     <li class="nav-item">
                         <a class="nav-link px-0 px-lg-2 {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
-                            <i class="bi bi-house-door d-lg-none me-2"></i> Home
+                            Home
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link px-0 px-lg-2 {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">
-                            <i class="bi bi-grid d-lg-none me-2"></i> Catalog
+                            Catalog
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 px-lg-2 {{ request()->routeIs('pages.about') ? 'active' : '' }}" href="{{ route('pages.about') }}">
+                            About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 px-lg-2 {{ request()->routeIs('pages.contact') ? 'active' : '' }}" href="{{ route('pages.contact') }}">
+                            Contact Us
                         </a>
                     </li>
                 </ul>

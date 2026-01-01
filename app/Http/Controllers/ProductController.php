@@ -24,7 +24,25 @@ class ProductController extends Controller
             $query->where('category', $request->category);
         }
 
-        $products = $query->latest()->paginate(12);
+        // Sorting
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'newest':
+                default:
+                    $query->latest();
+                    break;
+            }
+        } else {
+            $query->latest();
+        }
+
+        $products = $query->paginate(12);
         $totalProducts = Product::count();
 
         return view('products.index', compact('products', 'totalProducts'));

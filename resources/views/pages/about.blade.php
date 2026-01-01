@@ -49,8 +49,8 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100 text-center">
                     <div class="card-body p-4">
-                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                            <i class="bi bi-shield-check text-primary fs-2"></i>
+                        <div class="mb-3 d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle text-primary" style="width: 80px; height: 80px;">
+                            <i class="bi bi-shield-check fs-2"></i>
                         </div>
                         <h5 class="fw-bold">Quality Guaranteed</h5>
                         <p class="text-muted mb-0">
@@ -62,8 +62,8 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100 text-center">
                     <div class="card-body p-4">
-                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                            <i class="bi bi-truck text-success fs-2"></i>
+                        <div class="mb-3 d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle text-primary" style="width: 80px; height: 80px;">
+                            <i class="bi bi-truck fs-2"></i>
                         </div>
                         <h5 class="fw-bold">Fast Delivery</h5>
                         <p class="text-muted mb-0">
@@ -75,8 +75,8 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100 text-center">
                     <div class="card-body p-4">
-                        <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                            <i class="bi bi-headset text-warning fs-2"></i>
+                        <div class="mb-3 d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle text-primary" style="width: 80px; height: 80px;">
+                            <i class="bi bi-headset fs-2"></i>
                         </div>
                         <h5 class="fw-bold">24/7 Support</h5>
                         <p class="text-muted mb-0">

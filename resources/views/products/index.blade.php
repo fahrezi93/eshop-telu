@@ -180,8 +180,10 @@
                             </ul>
                         </div>
                         <!-- Decorative Circle -->
-                        <div class="position-absolute bottom-0 end-0 translate-middle-y rounded-circle bg-white opacity-10" 
-                             style="width: 100px; height: 100px; margin-right: -20px; margin-bottom: -20px;"></div>
+                        <div class="position-absolute bottom-0 end-0 translate-middle-y rounded-circle bg-white bg-opacity-10 d-flex align-items-center justify-content-center" 
+                             style="width: 100px; height: 100px; margin-right: -20px; margin-bottom: -20px;">
+                            <i class="bi bi-bag-heart-fill text-white display-4 opacity-50"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -201,14 +203,35 @@
                         <p class="text-muted mb-0 small">Showing {{ $products->firstItem() }}-{{ $products->lastItem() }} of {{ $products->total() }} results</p>
                         
                         <!-- Optional Sort (Visual Only for now) -->
+                        <!-- Sort Dropdown -->
                         <div class="dropdown">
                             <button class="btn btn-sm btn-white border shadow-sm dropdown-toggle rounded-pill px-3" type="button" data-bs-toggle="dropdown">
-                                Sort by: Newest
+                                Sort by: 
+                                @switch(request('sort'))
+                                    @case('price_asc') Price: Low to High @break
+                                    @case('price_desc') Price: High to Low @break
+                                    @default Newest
+                                @endswitch
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
-                                <li><a class="dropdown-item" href="#">Newest Arrival</a></li>
-                                <li><a class="dropdown-item" href="#">Price: Low to High</a></li>
-                                <li><a class="dropdown-item" href="#">Price: High to Low</a></li>
+                                <li>
+                                    <a class="dropdown-item {{ !request('sort') || request('sort') == 'newest' ? 'active' : '' }}" 
+                                       href="{{ route('products.index', array_merge(request()->query(), ['sort' => 'newest'])) }}">
+                                       Newest Arrival
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item {{ request('sort') == 'price_asc' ? 'active' : '' }}" 
+                                       href="{{ route('products.index', array_merge(request()->query(), ['sort' => 'price_asc'])) }}">
+                                       Price: Low to High
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item {{ request('sort') == 'price_desc' ? 'active' : '' }}" 
+                                       href="{{ route('products.index', array_merge(request()->query(), ['sort' => 'price_desc'])) }}">
+                                       Price: High to Low
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>

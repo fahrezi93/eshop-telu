@@ -4,7 +4,8 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="py-5" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%);">
+    <!-- Hero Section -->
+    <section class="py-5" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);">
         <div class="container text-center text-white py-4">
             <h1 class="display-5 fw-bold mb-3">Contact Us</h1>
             <p class="lead mb-0 opacity-90">We'd love to hear from you</p>
@@ -23,7 +24,7 @@
 
                 <div class="d-flex mb-4">
                     <div class="flex-shrink-0">
-                        <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
                             <i class="bi bi-geo-alt text-primary fs-4"></i>
                         </div>
                     </div>
@@ -39,8 +40,8 @@
 
                 <div class="d-flex mb-4">
                     <div class="flex-shrink-0">
-                        <div class="bg-success bg-opacity-10 rounded-circle p-3">
-                            <i class="bi bi-telephone text-success fs-4"></i>
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="bi bi-telephone text-primary fs-4"></i>
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-3">
@@ -54,8 +55,8 @@
 
                 <div class="d-flex mb-4">
                     <div class="flex-shrink-0">
-                        <div class="bg-info bg-opacity-10 rounded-circle p-3">
-                            <i class="bi bi-envelope text-info fs-4"></i>
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="bi bi-envelope text-primary fs-4"></i>
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-3">
@@ -69,8 +70,8 @@
 
                 <div class="d-flex">
                     <div class="flex-shrink-0">
-                        <div class="bg-warning bg-opacity-10 rounded-circle p-3">
-                            <i class="bi bi-clock text-warning fs-4"></i>
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="bi bi-clock text-primary fs-4"></i>
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-3">
@@ -87,17 +88,17 @@
                 <div class="mt-5">
                     <h5 class="fw-semibold mb-3">Follow Us</h5>
                     <div class="d-flex gap-3">
-                        <a href="#" class="btn btn-outline-primary rounded-circle p-2">
-                            <i class="bi bi-facebook fs-4"></i>
+                        <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-facebook fs-5"></i>
                         </a>
-                        <a href="#" class="btn btn-outline-danger rounded-circle p-2">
-                            <i class="bi bi-instagram fs-4"></i>
+                        <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-instagram fs-5"></i>
                         </a>
-                        <a href="#" class="btn btn-outline-dark rounded-circle p-2">
-                            <i class="bi bi-twitter-x fs-4"></i>
+                        <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-twitter-x fs-5"></i>
                         </a>
-                        <a href="#" class="btn btn-outline-success rounded-circle p-2">
-                            <i class="bi bi-whatsapp fs-4"></i>
+                        <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-whatsapp fs-5"></i>
                         </a>
                     </div>
                 </div>
