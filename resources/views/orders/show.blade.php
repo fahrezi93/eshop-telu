@@ -76,7 +76,7 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     @if($item->product && $item->product->image)
-                                                        <img src="{{ asset('storage/' . $item->product->image) }}" 
+                                                        <img src="{{ Str::startsWith($item->product->image, 'http') ? $item->product->image : (Str::startsWith($item->product->image, '/images') ? asset($item->product->image) : asset('storage/' . $item->product->image)) }}" 
                                                              alt="{{ $item->product->name ?? 'Product' }}" 
                                                              class="rounded me-3" 
                                                              style="width: 60px; height: 60px; object-fit: cover;">
@@ -180,17 +180,37 @@
             snap.pay('{{ $order->snap_token }}', {
                 onSuccess: function(result) {
                     console.log('Payment success:', result);
-                    // Redirect to verification route to update status in database
-                    window.location.href = "/orders/{{ $order->id }}/verify-payment"; 
+                    Swal.fire({
+                        title: 'Payment Successful!',
+                        text: 'Thank you for tour order.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#2563eb'
+                    }).then((result) => {
+                        window.location.href = "/orders/{{ $order->id }}/verify-payment"; 
+                    });
                 },
                 onPending: function(result) {
                     console.log('Payment pending:', result);
-                    alert('Payment is pending. Please complete your payment.');
-                    window.location.reload();
+                    Swal.fire({
+                        title: 'Payment Pending',
+                        text: 'Please complete your payment.',
+                        icon: 'info',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ffc107'
+                    }).then((result) => {
+                         window.location.reload();
+                    });
                 },
                 onError: function(result) {
                     console.error('Payment error:', result);
-                    alert('Payment failed. Please try again.');
+                    Swal.fire({
+                        title: 'Payment Failed',
+                        text: 'Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#dc3545'
+                    });
                     var btn = document.getElementById('pay-button');
                     btn.disabled = false;
                     btn.innerHTML = '<i class="bi bi-credit-card me-2"></i>Pay Now';

@@ -28,8 +28,8 @@
     .product-image-container {
         position: relative;
         overflow: hidden;
-        padding-top: 100%; /* 1:1 Aspect Ratio */
-        background-color: #f8fafc;
+        padding-top: 75%; /* 4:3 Aspect Ratio */
+        background-color: #fff; /* White background for seamless look */
     }
 
     .product-image {
@@ -38,12 +38,13 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
+        padding: 20px; /* Safe spacing from edges */
         transition: transform 0.5s ease;
     }
 
     .product-card:hover .product-image {
-        transform: scale(1.05);
+        transform: scale(1.05); /* Smooth zoom within container */
     }
 
     .category-tag {
@@ -58,6 +59,7 @@
         font-weight: 600;
         color: #1f2937;
         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        z-index: 10; /* Ensure tag is above image */
     }
 
     .action-btn {
@@ -244,8 +246,10 @@
                                     <div class="product-image-container">
                                         <span class="category-tag">{{ $product->category }}</span>
                                         @if($product->image)
-                                            <img src="{{ Str::startsWith($product->image, 'http') ? $product->image : asset('storage/' . $product->image) }}" 
-                                                 class="product-image" alt="{{ $product->name }}">
+                                            <img src="{{ Str::startsWith($product->image, 'http') ? $product->image : (Str::startsWith($product->image, '/images') ? asset($product->image) : asset('storage/' . $product->image)) }}" 
+                                                 class="product-image" 
+                                                 alt="{{ $product->name }}"
+                                                 loading="lazy">
                                         @else
                                             <div class="product-image d-flex align-items-center justify-content-center bg-light text-muted">
                                                 <i class="bi bi-image fs-1"></i>

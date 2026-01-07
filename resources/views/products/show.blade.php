@@ -23,7 +23,7 @@
             <div class="col-lg-5">
                 <div class="card border-0 shadow-sm">
                     @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" 
+                        <img src="{{ Str::startsWith($product->image, 'http') ? $product->image : (Str::startsWith($product->image, '/images') ? asset($product->image) : asset('storage/' . $product->image)) }}" 
                              class="card-img-top rounded" 
                              alt="{{ $product->name }}"
                              style="max-height: 450px; object-fit: contain; background: #f8f9fa;">

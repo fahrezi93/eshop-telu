@@ -31,7 +31,7 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     @if($item->product->image)
-                                                        <img src="{{ asset('storage/' . $item->product->image) }}" 
+                                                        <img src="{{ Str::startsWith($item->product->image, 'http') ? $item->product->image : (Str::startsWith($item->product->image, '/images') ? asset($item->product->image) : asset('storage/' . $item->product->image)) }}" 
                                                              alt="{{ $item->product->name }}" 
                                                              class="rounded me-3" 
                                                              style="width: 50px; height: 50px; object-fit: cover;">
@@ -166,45 +166,65 @@
 <script src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 
 <script type="text/javascript">
-    document.getElementById('pay-button').addEventListener('click', function() {
-        // Disable button to prevent double-click
-        this.disabled = true;
-        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
-        
-        // Call Midtrans Snap
-        snap.pay('{{ $order->snap_token }}', {
-            onSuccess: function(result) {
-                // Payment success
-                console.log('Payment success:', result);
-                alert('Payment successful! Thank you for your order.');
-                window.location.href = '{{ route("orders.show", $order->order_number) }}';
-            },
-            onPending: function(result) {
-                // Payment pending
-                console.log('Payment pending:', result);
-                alert('Payment is pending. Please complete your payment.');
-                window.location.href = '{{ route("orders.show", $order->order_number) }}';
-            },
-            onError: function(result) {
-                // Payment failed
-                console.error('Payment error:', result);
-                alert('Payment failed. Please try again.');
-                
-                // Re-enable button
-                var btn = document.getElementById('pay-button');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="bi bi-credit-card me-2"></i>Pay Now';
-            },
-            onClose: function() {
-                // Customer closed the popup without finishing the payment
-                console.log('Customer closed the popup');
-                
-                // Re-enable button
-                var btn = document.getElementById('pay-button');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="bi bi-credit-card me-2"></i>Pay Now';
-            }
+        document.getElementById('pay-button').addEventListener('click', function() {
+            // Disable button to prevent double-click
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+            
+            // Call Midtrans Snap
+            snap.pay('{{ $order->snap_token }}', {
+                onSuccess: function(result) {
+                    // Payment success
+                    console.log('Payment success:', result);
+                    Swal.fire({
+                        title: 'Payment Successful!',
+                        text: 'Thank you for your order. We will process it immediately.',
+                        icon: 'success',
+                        confirmButtonText: 'View Order',
+                        confirmButtonColor: '#2563eb'
+                    }).then((result) => {
+                        window.location.href = '{{ route("orders.show", $order->order_number) }}';
+                    });
+                },
+                onPending: function(result) {
+                    // Payment pending
+                    console.log('Payment pending:', result);
+                    Swal.fire({
+                        title: 'Payment Pending',
+                        text: 'Please complete your payment before the deadline.',
+                        icon: 'info',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ffc107'
+                    }).then((result) => {
+                        window.location.href = '{{ route("orders.show", $order->order_number) }}';
+                    });
+                },
+                onError: function(result) {
+                    // Payment failed
+                    console.error('Payment error:', result);
+                    Swal.fire({
+                        title: 'Payment Failed',
+                        text: 'Something went wrong with your payment. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#dc3545'
+                    });
+                    
+                    // Re-enable button
+                    var btn = document.getElementById('pay-button');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-credit-card me-2"></i>Pay Now';
+                },
+                onClose: function() {
+                    // Customer closed the popup without finishing the payment
+                    console.log('Customer closed the popup');
+                    
+                    // Re-enable button
+                    var btn = document.getElementById('pay-button');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-credit-card me-2"></i>Pay Now';
+                }
+            });
         });
-    });
 </script>
 @endpush

@@ -50,8 +50,8 @@
 
     .product-image-container {
         position: relative;
-        padding-top: 100%; /* 1:1 Aspect Ratio */
-        background-color: #f8fafc;
+        padding-top: 75%; /* 4:3 Aspect Ratio */
+        background-color: #fff;
         overflow: hidden;
     }
 
@@ -61,7 +61,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
+        padding: 20px;
         transition: transform 0.5s ease;
     }
 
@@ -196,7 +197,7 @@
                     <a href="{{ route('products.index') }}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
                         Shop Now <i class="bi bi-arrow-right ms-2"></i>
                     </a>
-                    <a href="#featured" class="btn btn-outline-secondary btn-lg rounded-pill px-4 border-0 bg-white shadow-sm">
+                    <a href="#featured" class="btn btn-outline-dark btn-lg rounded-pill px-5">
                         Explore
                     </a>
                 </div>
@@ -278,12 +279,15 @@
                     <div class="col">
                         <div class="product-card h-100 d-flex flex-column">
                             <div class="product-image-container">
-                                <span class="position-absolute top-0 start-0 m-3 bg-white bg-opacity-90 backdrop-blur px-2 py-1 rounded-pill small fw-bold shadow-sm" style="z-index: 2; font-size: 0.7rem;">
-                                    {{ $product->category }}
-                                </span>
+                                    <span class="position-absolute top-0 start-0 m-3 bg-white bg-opacity-90 backdrop-blur px-2 py-1 rounded-pill small fw-bold shadow-sm" style="z-index: 10; font-size: 0.7rem;">
+                                        {{ $product->category }}
+                                    </span>
                                 <a href="{{ route('products.show', $product->slug) }}">
                                     @if($product->image)
-                                        <img src="{{ Str::startsWith($product->image, 'http') ? $product->image : asset('storage/' . $product->image) }}" class="product-image" alt="{{ $product->name }}">
+                                        <img src="{{ Str::startsWith($product->image, 'http') ? $product->image : (Str::startsWith($product->image, '/images') ? asset($product->image) : asset('storage/' . $product->image)) }}" 
+                                             class="product-image" 
+                                             alt="{{ $product->name }}"
+                                             loading="lazy">
                                     @else
                                         <div class="product-image d-flex align-items-center justify-content-center bg-light text-muted">
                                             <i class="bi bi-image fs-1"></i>
