@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller
@@ -265,6 +266,11 @@ class OrderController extends Controller
             if (in_array($newStatus, [Order::STATUS_CANCELLED, Order::STATUS_EXPIRED])) {
                 $this->restoreStock($order);
             }
+
+            // Send WhatsApp notification for Paid, Cancelled, or Expired
+            if (in_array($newStatus, [Order::STATUS_PAID, Order::STATUS_CANCELLED, Order::STATUS_EXPIRED])) {
+                $this->sendWhatsAppNotification($order);
+            }
         }
 
         return response()->json([
@@ -322,6 +328,74 @@ class OrderController extends Controller
         Log::info('Stock restored for cancelled/expired order', [
             'order_id' => $order->order_number,
         ]);
+    }
+
+    /**
+     * Send WhatsApp notification using Fonnte.
+     */
+    private function sendWhatsAppNotification(Order $order): void
+    {
+        try {
+            $user = $order->user;
+            if (!$user || !$user->phone) {
+                Log::warning('WhatsApp notification failed: User phone number not found', ['order_id' => $order->order_number]);
+                return;
+            }
+
+            $token = config('services.fonnte.token');
+            if (!$token) {
+                Log::warning('WhatsApp notification failed: Fonnte token not configured');
+                return;
+            }
+
+            $message = "";
+
+            if ($order->payment_status === Order::STATUS_PAID) {
+                $message = "*Pembayaran Berhasil!* 🥳\n\n";
+                $message .= "Halo {$user->name},\n";
+                $message .= "Terima kasih telah melakukan pembayaran untuk pesanan *{$order->order_number}*.\n\n";
+                $message .= "Detail Pembayaran:\n";
+                $message .= "• Total: Rp " . number_format($order->total_price, 0, ',', '.') . "\n";
+                $message .= "• Status: LUNAS\n\n";
+                $message .= "Pesanan Anda akan segera kami proses dan kirimkan. \n\n";
+                $message .= "Terima kasih telah berbelanja di E-Shop Telu!";
+            
+            } elseif ($order->payment_status === Order::STATUS_CANCELLED) {
+                $message = "*Pembayaran Gagal/Dibatalkan* ❌\n\n";
+                $message .= "Halo {$user->name},\n";
+                $message .= "Mohon maaf, transaksi untuk pesanan *{$order->order_number}* telah dibatalkan atau gagal diproses oleh sistem pembayaran.\n\n";
+                $message .= "Silakan lakukan checkout ulang jika Anda masih ingin memesan produk ini.\n\n";
+                $message .= "Terima kasih.";
+
+            } elseif ($order->payment_status === Order::STATUS_EXPIRED) {
+                $message = "*Waktu Pembayaran Habis* ⏳\n\n";
+                $message .= "Halo {$user->name},\n";
+                $message .= "Sayang sekali, batas waktu pembayaran untuk pesanan *{$order->order_number}* telah habis.\n\n";
+                $message .= "Pesanan telah otomatis dibatalkan. Silakan pesan kembali jika diperlukan.\n\n";
+                $message .= "Terima kasih.";
+            } else {
+                return; // No notification for other statuses
+            }
+
+            $response = Http::withHeaders([
+                'Authorization' => $token,
+            ])->post('https://api.fonnte.com/send', [
+                'target' => $user->phone,
+                'message' => $message,
+                'countryCode' => '62', // Optional, default to Indonesia
+            ]);
+
+            if ($response->successful()) {
+                Log::info('WhatsApp notification sent successfully', ['order_id' => $order->order_number]);
+            } else {
+                Log::error('WhatsApp notification failed', [
+                    'order_id' => $order->order_number,
+                    'response' => $response->body(),
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error sending WhatsApp notification: ' . $e->getMessage());
+        }
     }
 
     /**
