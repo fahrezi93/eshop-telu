@@ -142,6 +142,27 @@
             padding: 0.25rem 0.75rem;
             border-radius: 50px;
         }
+
+        /* Product Description Markdown Styling */
+        .product-description {
+            line-height: 1.8;
+        }
+        .product-description p {
+            margin-bottom: 1rem;
+        }
+        .product-description strong {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        .product-description ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        .product-description ul li {
+            padding: 0.3rem 0;
+            padding-left: 0.5rem;
+        }
     </style>
     
     @stack('styles')
@@ -290,10 +311,10 @@
                 <div class="col-md-4">
                     <h6>Connect With Us</h6>
                     <div class="d-flex gap-3">
-                        <a href="#"><i class="bi bi-facebook fs-5"></i></a>
-                        <a href="#"><i class="bi bi-instagram fs-5"></i></a>
-                        <a href="#"><i class="bi bi-twitter-x fs-5"></i></a>
-                        <a href="#"><i class="bi bi-whatsapp fs-5"></i></a>
+                        <a href="https://web.facebook.com/?locale=id_ID" target="_blank" title="Facebook"><i class="bi bi-facebook fs-5"></i></a>
+                        <a href="https://www.instagram.com/helloridho/" target="_blank" title="Instagram"><i class="bi bi-instagram fs-5"></i></a>
+                        <a href="https://x.com/?lang=id" target="_blank" title="X (Twitter)"><i class="bi bi-twitter-x fs-5"></i></a>
+                        <a href="https://wa.me/6282268882235" target="_blank" title="WhatsApp"><i class="bi bi-whatsapp fs-5"></i></a>
                     </div>
                 </div>
             </div>

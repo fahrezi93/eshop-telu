@@ -88,16 +88,16 @@
                 <div class="mt-5">
                     <h5 class="fw-semibold mb-3">Follow Us</h5>
                     <div class="d-flex gap-3">
-                        <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <a href="https://web.facebook.com/?locale=id_ID" target="_blank" title="Facebook" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                             <i class="bi bi-facebook fs-5"></i>
                         </a>
-                        <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <a href="https://www.instagram.com/helloridho/" target="_blank" title="Instagram" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                             <i class="bi bi-instagram fs-5"></i>
                         </a>
-                        <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <a href="https://x.com/?lang=id" target="_blank" title="X (Twitter)" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                             <i class="bi bi-twitter-x fs-5"></i>
                         </a>
-                        <a href="#" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <a href="https://wa.me/6282268882235" target="_blank" title="WhatsApp" class="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                             <i class="bi bi-whatsapp fs-5"></i>
                         </a>
                     </div>

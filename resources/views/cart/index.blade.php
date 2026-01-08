@@ -46,7 +46,7 @@
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         @if($item['product']->image)
-                                                            <img src="{{ asset('storage/' . $item['product']->image) }}" 
+                                                            <img src="{{ asset(ltrim($item['product']->image, '/')) }}" 
                                                                  alt="{{ $item['product']->name }}" 
                                                                  class="rounded me-3" 
                                                                  style="width: 60px; height: 60px; object-fit: cover;">
@@ -104,7 +104,7 @@
                                             <!-- Image -->
                                             <div class="flex-shrink-0">
                                                 @if($item['product']->image)
-                                                    <img src="{{ asset('storage/' . $item['product']->image) }}" 
+                                                    <img src="{{ asset(ltrim($item['product']->image, '/')) }}" 
                                                          alt="{{ $item['product']->name }}" 
                                                          class="rounded" 
                                                          style="width: 80px; height: 80px; object-fit: cover;">

@@ -28,8 +28,8 @@ class OrderController extends Controller
         $user = $request->user();
 
         // Validate user has address and phone
-    if (empty($user->address) || empty($user->phone)) {
-        return redirect()->route('profile.edit')->with('warning', 'Please complete your shipping address and phone number to proceed with checkout.');
+    if (empty($user->street_address) || empty($user->phone)) {
+        return redirect()->route('profile.edit')->with('warning', 'Silakan lengkapi alamat pengiriman dan nomor telepon untuk melanjutkan checkout.');
     }
 
         try {
@@ -108,6 +108,25 @@ class OrderController extends Controller
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
         
+        // Fix SSL certificate issue on Windows - use system CA bundle
+        $caPath = ini_get('curl.cainfo') ?: ini_get('openssl.cafile');
+        if ($caPath && file_exists($caPath)) {
+            \Midtrans\Config::$curlOptions = [
+                CURLOPT_CAINFO => $caPath,
+                CURLOPT_HTTPHEADER => [],
+            ];
+        } else {
+            // For development/sandbox only: disable SSL verification
+            // WARNING: Do not use this in production!
+            if (!\Midtrans\Config::$isProduction) {
+                \Midtrans\Config::$curlOptions = [
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_HTTPHEADER => [],
+                ];
+            }
+        }
+        
         Log::info('Midtrans Mode: ' . (\Midtrans\Config::$isProduction ? 'PRODUCTION' : 'SANDBOX'));
 
         // Build Midtrans transaction params
@@ -121,10 +140,16 @@ class OrderController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'billing_address' => [
-                    'address' => $user->address,
+                    'address' => $user->full_address,
+                    'city' => $user->city,
+                    'postal_code' => $user->postal_code,
+                    'country_code' => 'IDN',
                 ],
                 'shipping_address' => [
-                    'address' => $user->address,
+                    'address' => $user->full_address,
+                    'city' => $user->city,
+                    'postal_code' => $user->postal_code,
+                    'country_code' => 'IDN',
                 ],
             ],
             'item_details' => $midtransItems,
@@ -172,6 +197,12 @@ class OrderController extends Controller
      */
     public function callback(Request $request): JsonResponse
     {
+        // Log incoming callback for debugging
+        Log::info('Midtrans callback received', [
+            'ip' => $request->ip(),
+            'data' => $request->all(),
+        ]);
+        
         // Get notification body
         $notification = $request->all();
 

@@ -33,8 +33,23 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string'],
+            'phone' => ['required', 'string', 'max:20'],
+            'street_address' => ['required', 'string', 'max:255'],
+            'rt_rw' => ['required', 'string', 'max:20'],
+            'kelurahan' => ['required', 'string', 'max:100'],
+            'kecamatan' => ['required', 'string', 'max:100'],
+            'city' => ['required', 'string', 'max:100'],
+            'province' => ['required', 'string', 'max:100'],
+            'postal_code' => ['required', 'string', 'max:10'],
+        ], [
+            'phone.required' => 'Nomor telepon wajib diisi.',
+            'street_address.required' => 'Alamat jalan wajib diisi.',
+            'rt_rw.required' => 'RT/RW wajib diisi.',
+            'kelurahan.required' => 'Kelurahan wajib diisi.',
+            'kecamatan.required' => 'Kecamatan wajib diisi.',
+            'city.required' => 'Kota/Kabupaten wajib diisi.',
+            'province.required' => 'Provinsi wajib dipilih.',
+            'postal_code.required' => 'Kode pos wajib diisi.',
         ]);
 
         $user = User::create([
@@ -42,7 +57,13 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
-            'address' => $request->address,
+            'street_address' => $request->street_address,
+            'rt_rw' => $request->rt_rw,
+            'kelurahan' => $request->kelurahan,
+            'kecamatan' => $request->kecamatan,
+            'city' => $request->city,
+            'province' => $request->province,
+            'postal_code' => $request->postal_code,
         ]);
 
         event(new Registered($user));

@@ -151,7 +151,7 @@
                         <hr>
                         <p class="mb-0 text-muted">
                             <i class="bi bi-geo-alt me-1"></i>
-                            {{ $order->user->address ?: 'No address provided' }}
+                            {{ $order->user->full_address ?: 'Alamat belum diisi' }}
                         </p>
                     </div>
                 </div>
@@ -173,16 +173,20 @@
     <script src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 
     <script type="text/javascript">
+        var paymentAttempted = false;
+        
         document.getElementById('pay-button').addEventListener('click', function() {
             this.disabled = true;
             this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+            paymentAttempted = true;
             
             snap.pay('{{ $order->snap_token }}', {
                 onSuccess: function(result) {
                     console.log('Payment success:', result);
+                    paymentAttempted = false;
                     Swal.fire({
                         title: 'Payment Successful!',
-                        text: 'Thank you for tour order.',
+                        text: 'Thank you for your order.',
                         icon: 'success',
                         confirmButtonText: 'OK',
                         confirmButtonColor: '#2563eb'
@@ -192,6 +196,7 @@
                 },
                 onPending: function(result) {
                     console.log('Payment pending:', result);
+                    paymentAttempted = false;
                     Swal.fire({
                         title: 'Payment Pending',
                         text: 'Please complete your payment.',
@@ -204,9 +209,10 @@
                 },
                 onError: function(result) {
                     console.error('Payment error:', result);
+                    paymentAttempted = false;
                     Swal.fire({
-                        title: 'Payment Failed',
-                        text: 'Please try again.',
+                        title: 'Payment Failed!',
+                        text: 'Your payment was declined by the bank. Please try again with a different payment method.',
                         icon: 'error',
                         confirmButtonText: 'Try Again',
                         confirmButtonColor: '#dc3545'
@@ -217,6 +223,18 @@
                 },
                 onClose: function() {
                     console.log('Customer closed the popup');
+                    
+                    if (paymentAttempted) {
+                        Swal.fire({
+                            title: 'Payment Cancelled',
+                            text: 'You closed the payment window without completing payment. Click "Pay Now" to try again.',
+                            icon: 'warning',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#ffc107'
+                        });
+                    }
+                    
+                    paymentAttempted = false;
                     var btn = document.getElementById('pay-button');
                     btn.disabled = false;
                     btn.innerHTML = '<i class="bi bi-credit-card me-2"></i>Pay Now';

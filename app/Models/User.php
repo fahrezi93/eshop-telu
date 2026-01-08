@@ -22,9 +22,33 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'address',
         'phone',
+        'street_address',
+        'rt_rw',
+        'kelurahan',
+        'kecamatan',
+        'city',
+        'province',
+        'postal_code',
     ];
+
+    /**
+     * Get the full formatted address.
+     */
+    public function getFullAddressAttribute(): string
+    {
+        $parts = array_filter([
+            $this->street_address,
+            $this->rt_rw,
+            $this->kelurahan,
+            $this->kecamatan,
+            $this->city,
+            $this->province,
+            $this->postal_code,
+        ]);
+        
+        return implode(', ', $parts);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

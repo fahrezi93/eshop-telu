@@ -96,8 +96,8 @@
                                 </p>
                             </div>
                             <div class="col-12">
-                                <label class="form-label text-muted small">Shipping Address</label>
-                                <p class="fw-semibold mb-0">{{ $order->user->address ?: 'Not provided' }}</p>
+                                <label class="form-label text-muted small">Alamat Pengiriman</label>
+                                <p class="fw-semibold mb-0">{{ $order->user->full_address ?: 'Belum diisi' }}</p>
                             </div>
                         </div>
                     </div>
@@ -166,16 +166,23 @@
 <script src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 
 <script type="text/javascript">
+        // Track if payment was attempted
+        var paymentAttempted = false;
+        
         document.getElementById('pay-button').addEventListener('click', function() {
             // Disable button to prevent double-click
             this.disabled = true;
             this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+            
+            // Reset payment attempted flag
+            paymentAttempted = true;
             
             // Call Midtrans Snap
             snap.pay('{{ $order->snap_token }}', {
                 onSuccess: function(result) {
                     // Payment success
                     console.log('Payment success:', result);
+                    paymentAttempted = false;
                     Swal.fire({
                         title: 'Payment Successful!',
                         text: 'Thank you for your order. We will process it immediately.',
@@ -189,6 +196,7 @@
                 onPending: function(result) {
                     // Payment pending
                     console.log('Payment pending:', result);
+                    paymentAttempted = false;
                     Swal.fire({
                         title: 'Payment Pending',
                         text: 'Please complete your payment before the deadline.',
@@ -202,9 +210,10 @@
                 onError: function(result) {
                     // Payment failed
                     console.error('Payment error:', result);
+                    paymentAttempted = false;
                     Swal.fire({
-                        title: 'Payment Failed',
-                        text: 'Something went wrong with your payment. Please try again.',
+                        title: 'Payment Failed!',
+                        text: 'Your payment was declined or failed. Please try again with a different payment method.',
                         icon: 'error',
                         confirmButtonText: 'Try Again',
                         confirmButtonColor: '#dc3545'
@@ -218,6 +227,19 @@
                 onClose: function() {
                     // Customer closed the popup without finishing the payment
                     console.log('Customer closed the popup');
+                    
+                    // Show notification based on whether payment was attempted
+                    if (paymentAttempted) {
+                        Swal.fire({
+                            title: 'Payment Cancelled',
+                            text: 'You closed the payment window. Your order is still awaiting payment. Click "Pay Now" to try again.',
+                            icon: 'warning',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#ffc107'
+                        });
+                    }
+                    
+                    paymentAttempted = false;
                     
                     // Re-enable button
                     var btn = document.getElementById('pay-button');

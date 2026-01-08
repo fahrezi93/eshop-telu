@@ -74,7 +74,9 @@
                         <!-- Description -->
                         <div class="mb-4">
                             <h5 class="fw-semibold mb-2">Description</h5>
-                            <p class="text-muted">{{ $product->description ?: 'No description available for this product.' }}</p>
+                            <div class="text-muted product-description">
+                                {!! Str::markdown($product->description ?: 'No description available for this product.') !!}
+                            </div>
                         </div>
 
                         <!-- Add to Cart Form -->

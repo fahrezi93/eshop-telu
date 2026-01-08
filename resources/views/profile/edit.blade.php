@@ -74,15 +74,118 @@
                                 
                                 <!-- Added Phone & Address -->
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label fw-semibold">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="e.g. 08123456789">
+                                    <label for="phone" class="form-label fw-semibold">Nomor Telepon <span class="text-danger">*</span></label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="08xx xxxx xxxx" required>
                                     @error('phone') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="address" class="form-label fw-semibold">Shipping Address</label>
-                                    <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter your full address">{{ old('address', $user->address) }}</textarea>
-                                    @error('address') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                    <label class="form-label fw-semibold">
+                                        <i class="bi bi-geo-alt me-1"></i>Alamat Lengkap <span class="text-danger">*</span>
+                                    </label>
+                                    
+                                    <!-- Street Address -->
+                                    <div class="mb-2">
+                                        <input type="text" 
+                                               class="form-control @error('street_address') is-invalid @enderror" 
+                                               id="street_address" 
+                                               name="street_address" 
+                                               value="{{ old('street_address', $user->street_address) }}"
+                                               required
+                                               placeholder="Jalan & Nomor Rumah">
+                                        @error('street_address')
+                                            <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- RT/RW -->
+                                    <div class="mb-2">
+                                        <input type="text" 
+                                               class="form-control @error('rt_rw') is-invalid @enderror" 
+                                               id="rt_rw" 
+                                               name="rt_rw" 
+                                               value="{{ old('rt_rw', $user->rt_rw) }}"
+                                               required
+                                               placeholder="RT/RW">
+                                        @error('rt_rw')
+                                            <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <!-- Kelurahan -->
+                                        <div class="col-6">
+                                            <input type="text" 
+                                                   class="form-control @error('kelurahan') is-invalid @enderror" 
+                                                   id="kelurahan" 
+                                                   name="kelurahan" 
+                                                   value="{{ old('kelurahan', $user->kelurahan) }}"
+                                                   required
+                                                   placeholder="Kelurahan/Desa">
+                                            @error('kelurahan')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <!-- Kecamatan -->
+                                        <div class="col-6">
+                                            <input type="text" 
+                                                   class="form-control @error('kecamatan') is-invalid @enderror" 
+                                                   id="kecamatan" 
+                                                   name="kecamatan" 
+                                                   value="{{ old('kecamatan', $user->kecamatan) }}"
+                                                   required
+                                                   placeholder="Kecamatan">
+                                            @error('kecamatan')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <!-- City -->
+                                        <div class="col-8">
+                                            <input type="text" 
+                                                   class="form-control @error('city') is-invalid @enderror" 
+                                                   id="city" 
+                                                   name="city" 
+                                                   value="{{ old('city', $user->city) }}"
+                                                   required
+                                                   placeholder="Kota/Kabupaten">
+                                            @error('city')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <!-- Postal Code -->
+                                        <div class="col-4">
+                                            <input type="text" 
+                                                   class="form-control @error('postal_code') is-invalid @enderror" 
+                                                   id="postal_code" 
+                                                   name="postal_code" 
+                                                   value="{{ old('postal_code', $user->postal_code) }}"
+                                                   required
+                                                   maxlength="5"
+                                                   placeholder="Kode Pos">
+                                            @error('postal_code')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Province -->
+                                    <div class="mb-0">
+                                        <select class="form-select @error('province') is-invalid @enderror" 
+                                                id="province" 
+                                                name="province" 
+                                                required>
+                                            <option value="">-- Pilih Provinsi --</option>
+                                            @foreach(['Aceh', 'Sumatera Utara', 'Sumatera Barat', 'Riau', 'Kepulauan Riau', 'Jambi', 'Sumatera Selatan', 'Bangka Belitung', 'Bengkulu', 'Lampung', 'DKI Jakarta', 'Banten', 'Jawa Barat', 'Jawa Tengah', 'DI Yogyakarta', 'Jawa Timur', 'Bali', 'Nusa Tenggara Barat', 'Nusa Tenggara Timur', 'Kalimantan Barat', 'Kalimantan Tengah', 'Kalimantan Selatan', 'Kalimantan Timur', 'Kalimantan Utara', 'Sulawesi Utara', 'Gorontalo', 'Sulawesi Tengah', 'Sulawesi Barat', 'Sulawesi Selatan', 'Sulawesi Tenggara', 'Maluku', 'Maluku Utara', 'Papua', 'Papua Barat', 'Papua Selatan', 'Papua Tengah', 'Papua Pegunungan', 'Papua Barat Daya'] as $prov)
+                                                <option value="{{ $prov }}" {{ old('province', $user->province) == $prov ? 'selected' : '' }}>{{ $prov }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('province')
+                                            <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <div class="d-flex align-items-center gap-3">

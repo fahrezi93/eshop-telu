@@ -61,7 +61,7 @@
 
                             <!-- Phone -->
                             <div class="mb-3">
-                                <label for="phone" class="form-label fw-semibold">Phone Number <span class="text-muted fw-normal">(optional)</span></label>
+                                <label for="phone" class="form-label fw-semibold">Nomor Telepon Aktif <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-phone"></i></span>
                                     <input type="tel" 
@@ -69,27 +69,157 @@
                                            id="phone" 
                                            name="phone" 
                                            value="{{ old('phone') }}"
-                                           placeholder="+62 xxx xxxx xxxx">
+                                           required
+                                           placeholder="08xx xxxx xxxx">
                                 </div>
                                 @error('phone')
                                     <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Address -->
+                            <!-- Address Section -->
                             <div class="mb-3">
-                                <label for="address" class="form-label fw-semibold">Shipping Address <span class="text-muted fw-normal">(optional)</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="bi bi-geo-alt"></i></span>
-                                    <textarea class="form-control @error('address') is-invalid @enderror" 
-                                              id="address" 
-                                              name="address" 
-                                              rows="2"
-                                              placeholder="Your complete shipping address">{{ old('address') }}</textarea>
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-geo-alt me-1"></i>Alamat Lengkap <span class="text-danger">*</span>
+                                </label>
+                                
+                                <!-- Street Address -->
+                                <div class="mb-2">
+                                    <input type="text" 
+                                           class="form-control @error('street_address') is-invalid @enderror" 
+                                           id="street_address" 
+                                           name="street_address" 
+                                           value="{{ old('street_address') }}"
+                                           required
+                                           placeholder="Jalan & Nomor Rumah (contoh: Jl. Sudirman No. 123)">
+                                    @error('street_address')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                @error('address')
-                                    <div class="text-danger small mt-1">{{ $message }}</div>
-                                @enderror
+
+                                <!-- RT/RW -->
+                                <div class="mb-2">
+                                    <input type="text" 
+                                           class="form-control @error('rt_rw') is-invalid @enderror" 
+                                           id="rt_rw" 
+                                           name="rt_rw" 
+                                           value="{{ old('rt_rw') }}"
+                                           required
+                                           placeholder="RT/RW (contoh: RT 01/RW 05)">
+                                    @error('rt_rw')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <!-- Kelurahan -->
+                                    <div class="col-6">
+                                        <input type="text" 
+                                               class="form-control @error('kelurahan') is-invalid @enderror" 
+                                               id="kelurahan" 
+                                               name="kelurahan" 
+                                               value="{{ old('kelurahan') }}"
+                                               required
+                                               placeholder="Kelurahan/Desa">
+                                        @error('kelurahan')
+                                            <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <!-- Kecamatan -->
+                                    <div class="col-6">
+                                        <input type="text" 
+                                               class="form-control @error('kecamatan') is-invalid @enderror" 
+                                               id="kecamatan" 
+                                               name="kecamatan" 
+                                               value="{{ old('kecamatan') }}"
+                                               required
+                                               placeholder="Kecamatan">
+                                        @error('kecamatan')
+                                            <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <!-- City -->
+                                    <div class="col-8">
+                                        <input type="text" 
+                                               class="form-control @error('city') is-invalid @enderror" 
+                                               id="city" 
+                                               name="city" 
+                                               value="{{ old('city') }}"
+                                               required
+                                               placeholder="Kota/Kabupaten">
+                                        @error('city')
+                                            <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <!-- Postal Code -->
+                                    <div class="col-4">
+                                        <input type="text" 
+                                               class="form-control @error('postal_code') is-invalid @enderror" 
+                                               id="postal_code" 
+                                               name="postal_code" 
+                                               value="{{ old('postal_code') }}"
+                                               required
+                                               maxlength="5"
+                                               placeholder="Kode Pos">
+                                        @error('postal_code')
+                                            <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Province -->
+                                <div class="mb-0">
+                                    <select class="form-select @error('province') is-invalid @enderror" 
+                                            id="province" 
+                                            name="province" 
+                                            required>
+                                        <option value="">-- Pilih Provinsi --</option>
+                                        <option value="Aceh" {{ old('province') == 'Aceh' ? 'selected' : '' }}>Aceh</option>
+                                        <option value="Sumatera Utara" {{ old('province') == 'Sumatera Utara' ? 'selected' : '' }}>Sumatera Utara</option>
+                                        <option value="Sumatera Barat" {{ old('province') == 'Sumatera Barat' ? 'selected' : '' }}>Sumatera Barat</option>
+                                        <option value="Riau" {{ old('province') == 'Riau' ? 'selected' : '' }}>Riau</option>
+                                        <option value="Kepulauan Riau" {{ old('province') == 'Kepulauan Riau' ? 'selected' : '' }}>Kepulauan Riau</option>
+                                        <option value="Jambi" {{ old('province') == 'Jambi' ? 'selected' : '' }}>Jambi</option>
+                                        <option value="Sumatera Selatan" {{ old('province') == 'Sumatera Selatan' ? 'selected' : '' }}>Sumatera Selatan</option>
+                                        <option value="Bangka Belitung" {{ old('province') == 'Bangka Belitung' ? 'selected' : '' }}>Bangka Belitung</option>
+                                        <option value="Bengkulu" {{ old('province') == 'Bengkulu' ? 'selected' : '' }}>Bengkulu</option>
+                                        <option value="Lampung" {{ old('province') == 'Lampung' ? 'selected' : '' }}>Lampung</option>
+                                        <option value="DKI Jakarta" {{ old('province') == 'DKI Jakarta' ? 'selected' : '' }}>DKI Jakarta</option>
+                                        <option value="Banten" {{ old('province') == 'Banten' ? 'selected' : '' }}>Banten</option>
+                                        <option value="Jawa Barat" {{ old('province') == 'Jawa Barat' ? 'selected' : '' }}>Jawa Barat</option>
+                                        <option value="Jawa Tengah" {{ old('province') == 'Jawa Tengah' ? 'selected' : '' }}>Jawa Tengah</option>
+                                        <option value="DI Yogyakarta" {{ old('province') == 'DI Yogyakarta' ? 'selected' : '' }}>DI Yogyakarta</option>
+                                        <option value="Jawa Timur" {{ old('province') == 'Jawa Timur' ? 'selected' : '' }}>Jawa Timur</option>
+                                        <option value="Bali" {{ old('province') == 'Bali' ? 'selected' : '' }}>Bali</option>
+                                        <option value="Nusa Tenggara Barat" {{ old('province') == 'Nusa Tenggara Barat' ? 'selected' : '' }}>Nusa Tenggara Barat</option>
+                                        <option value="Nusa Tenggara Timur" {{ old('province') == 'Nusa Tenggara Timur' ? 'selected' : '' }}>Nusa Tenggara Timur</option>
+                                        <option value="Kalimantan Barat" {{ old('province') == 'Kalimantan Barat' ? 'selected' : '' }}>Kalimantan Barat</option>
+                                        <option value="Kalimantan Tengah" {{ old('province') == 'Kalimantan Tengah' ? 'selected' : '' }}>Kalimantan Tengah</option>
+                                        <option value="Kalimantan Selatan" {{ old('province') == 'Kalimantan Selatan' ? 'selected' : '' }}>Kalimantan Selatan</option>
+                                        <option value="Kalimantan Timur" {{ old('province') == 'Kalimantan Timur' ? 'selected' : '' }}>Kalimantan Timur</option>
+                                        <option value="Kalimantan Utara" {{ old('province') == 'Kalimantan Utara' ? 'selected' : '' }}>Kalimantan Utara</option>
+                                        <option value="Sulawesi Utara" {{ old('province') == 'Sulawesi Utara' ? 'selected' : '' }}>Sulawesi Utara</option>
+                                        <option value="Gorontalo" {{ old('province') == 'Gorontalo' ? 'selected' : '' }}>Gorontalo</option>
+                                        <option value="Sulawesi Tengah" {{ old('province') == 'Sulawesi Tengah' ? 'selected' : '' }}>Sulawesi Tengah</option>
+                                        <option value="Sulawesi Barat" {{ old('province') == 'Sulawesi Barat' ? 'selected' : '' }}>Sulawesi Barat</option>
+                                        <option value="Sulawesi Selatan" {{ old('province') == 'Sulawesi Selatan' ? 'selected' : '' }}>Sulawesi Selatan</option>
+                                        <option value="Sulawesi Tenggara" {{ old('province') == 'Sulawesi Tenggara' ? 'selected' : '' }}>Sulawesi Tenggara</option>
+                                        <option value="Maluku" {{ old('province') == 'Maluku' ? 'selected' : '' }}>Maluku</option>
+                                        <option value="Maluku Utara" {{ old('province') == 'Maluku Utara' ? 'selected' : '' }}>Maluku Utara</option>
+                                        <option value="Papua" {{ old('province') == 'Papua' ? 'selected' : '' }}>Papua</option>
+                                        <option value="Papua Barat" {{ old('province') == 'Papua Barat' ? 'selected' : '' }}>Papua Barat</option>
+                                        <option value="Papua Selatan" {{ old('province') == 'Papua Selatan' ? 'selected' : '' }}>Papua Selatan</option>
+                                        <option value="Papua Tengah" {{ old('province') == 'Papua Tengah' ? 'selected' : '' }}>Papua Tengah</option>
+                                        <option value="Papua Pegunungan" {{ old('province') == 'Papua Pegunungan' ? 'selected' : '' }}>Papua Pegunungan</option>
+                                        <option value="Papua Barat Daya" {{ old('province') == 'Papua Barat Daya' ? 'selected' : '' }}>Papua Barat Daya</option>
+                                    </select>
+                                    @error('province')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
 
                             <!-- Password -->
